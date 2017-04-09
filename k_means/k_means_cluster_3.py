@@ -15,8 +15,6 @@ sys.path.append("../tools/")
 from feature_format import featureFormat, targetFeatureSplit
 
 
-
-
 def Draw(pred, features, poi, mark_poi=False, name="image.png", f1_name="feature 1", f2_name="feature 2"):
     """ some plotting code designed to help you visualize your clusters """
 
@@ -59,6 +57,42 @@ poi, finance_features = targetFeatureSplit( data )
 ### you'll want to change this line to 
 ### for f1, f2, _ in finance_features:
 ### (as it's currently written, the line below assumes 2 features)
+
+from sklearn import preprocessing
+min_max_scaler = preprocessing.MinMaxScaler()
+from sklearn.cluster import KMeans
+import numpy as np
+
+points = []
+f2_array = []
+f1_array = []
+for f1, f2 in finance_features:
+    points.append([f1, f2])
+    # if f2 > 0:
+    #     f2_array.append(f2)
+    # if f1 > 0:
+    #     f1_array.append(f1)
+    f2_array.append(f2)
+    f1_array.append(f1)
+
+print '-'*100
+
+f1_train_minmax = min_max_scaler.fit_transform(f1_array)
+print min_max_scaler.transform([200000.])
+
+f2_train_minmax = min_max_scaler.fit_transform(f2_array)
+print min_max_scaler.transform([1000000.])
+
+
+# print f1_train_minmax
+# print len(f1_train_minmax)
+# print len(finance_features)
+finance_features_new = []
+for idx, val in enumerate(f1_train_minmax):
+    finance_features_new.append([f1_train_minmax[idx], f2_train_minmax[idx]])
+finance_features = finance_features_new
+
+
 for f1, f2 in finance_features:
     plt.scatter( f1, f2 )
 plt.show()
@@ -68,18 +102,6 @@ plt.show()
 ### cluster here; create predictions of the cluster labels
 ### for the data and store them to a list called pred
 
-from sklearn.cluster import KMeans
-import numpy as np
-
-points = []
-f2_array = []
-f1_array = []
-for f1, f2 in finance_features:
-    points.append([f1, f2])
-    if f2 > 0:
-        f2_array.append(f2)
-    if f1 > 0:
-        f1_array.append(f1)
 
 # print max(f2_array)
 # print min(f2_array)
@@ -87,10 +109,11 @@ for f1, f2 in finance_features:
 print max(f1_array)
 print min(f1_array)
 
-X = np.array(points)
-kmeans = KMeans(n_clusters=2, random_state=0).fit(X)
+# X = np.array(points)
+kmeans = KMeans(n_clusters=2, random_state=0).fit(finance_features)
+pred = kmeans.labels_
+
 print kmeans.labels_
-pred = kmeans.predict(finance_features)
 print '-----------'
 print pred
 print '-----------'
