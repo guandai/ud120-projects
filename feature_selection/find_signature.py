@@ -36,8 +36,7 @@ features_train = features_train[:150].toarray()
 labels_train   = labels_train[:150]
 
 
-
 ### your code goes here
-
+print len(features_train)
 
 
