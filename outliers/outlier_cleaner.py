@@ -9,12 +9,15 @@ def outlierCleaner(predictions, ages, net_worths):
 
         Return a list of tuples named cleaned_data where 
         each tuple is of the form (age, net_worth, error).
-    """
-    
+    """    
     cleaned_data = []
 
     ### your code goes here
+    for index, predict in enumerate(predictions):
+      error = (predict - net_worths[index])**2
+      cleaned_data.append([ages[index], net_worths[index], error])
 
-    
-    return cleaned_data
+    cleaned_data = sorted(cleaned_data, key=lambda k: k[2])
+    length = len(cleaned_data) * .9
 
+    return cleaned_data[0:int(length)]
