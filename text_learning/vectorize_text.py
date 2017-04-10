@@ -42,7 +42,7 @@ for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
         ### only look at first 200 emails when developing
         ### once everything is working, remove this line to run over full dataset
         temp_counter += 1
-        print temp_counter
+       # print temp_counter
         if temp_counter > 0:            
             path = os.path.join('..', path[:-1])
             email = open(path, "r")
@@ -53,7 +53,8 @@ for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
 
             ### use str.replace() to remove any instances of the words
             ### ["sara", "shackleton", "chris", "germani"]
-            names = ["sara", "shackleton", "chris", "germani"]
+            names = ["sara", "shackleton", "chris", "germani", "sshacklensf", "cgermannsf"]
+            # names = ["sara", "shackleton", "chris", "germani", "sshacklensf", "cgermannsf", "houectect", "houect", "houston"]
             for name in names:
                 parsed_email = parsed_email.replace(name, "")
             ## append the text to word_data
